@@ -11,6 +11,10 @@ instead of the current thread.
 
 ## Installation
 
+    $ pip install gevent_inotifyx
+
+From source:
+
     $ python setup.py install
 
 To run the tests:
