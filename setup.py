@@ -18,16 +18,17 @@ class TestCommand(Command):
 
     def run(self):
         import unittest
-        import tests
-        suite = unittest.TestLoader().loadTestsFromModule(tests)
+        import test_gevent_inotifyx
+        suite = unittest.TestLoader().loadTestsFromModule(test_gevent_inotifyx)
         unittest.TextTestRunner(verbosity=2).run(suite)
 
 setup(name='gevent_inotifyx',
       version=__version__,
       description='gevent compatibility for inotifyx',
       author='Stanis Trendelenburg',
-      author_email='stanis.trenelenburg@gmail.com',
+      author_email='stanis.trendelenburg@gmail.com',
       url='https://github.com/trendels/gevent_inotifyx',
+      license='MIT',
       py_modules=['gevent_inotifyx'],
       cmdclass = {'test': TestCommand},
 )

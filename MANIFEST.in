@@ -1,0 +1,3 @@
+include test_gevent_inotifyx.py
+include README.md
+include LICENSE
