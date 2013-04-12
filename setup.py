@@ -31,4 +31,5 @@ setup(name='gevent_inotifyx',
       license='MIT',
       py_modules=['gevent_inotifyx'],
       cmdclass = {'test': TestCommand},
+      install_requires=['gevent', 'inotifyx'],
 )
