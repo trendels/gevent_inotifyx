@@ -1,8 +1,19 @@
 """
 gevent compatibility for inotifyx
 
-Usage:
-    >>> import gevent_inotifyx as inotifyx
+General usage:
+    >>> import os
+    >>> import gevent_inotifyx as inotify
+    >>> fd = inotify.init()
+    >>> try:
+    ...     wd = inotify.add_watch(fd, '/path', inotify.IN_CREATE)
+    ...     events = inotify.get_events(fd)
+    ...     for event in events:
+    ...         print "File created: ", os.path.join('/path', event.name)
+    ...     inotify.rm_watch(fd, wd)
+    ... finally:
+    ...     os.close(fd)
+
 
 This module is designed as a drop-in replacement for inotifyx.
 Calling gevent_inotifyx.get_events() will only block the current greenlet
