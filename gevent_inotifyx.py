@@ -14,12 +14,16 @@ __version__ = '0.1.1'
 import os
 import struct
 
+import inotifyx
 from inotifyx import *
 from gevent.select import select
 
 _EVENT_FMT = 'iIII'
 _EVENT_SIZE = struct.calcsize(_EVENT_FMT)
 _BUF_LEN = 1024 * (_EVENT_SIZE + 16)
+
+__all__ = ['InotifyEvent', 'add_watch', 'get_events', 'init', 'rm_watch']
+__all__.extend([name for name in dir(inotifyx) if name.startswith('IN_')])
 
 # Replacement for the inotifyx_get_events() C function using gevent.select
 def get_events(fd, timeout=None):
