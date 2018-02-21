@@ -44,7 +44,7 @@ from .distinfo import version as __version__
 constants = {}
 
 for name in dir(binding):
-    if name.startswith('IN_'):
+    if name.startswith('IN_') or name == 'BUF_LEN':
         globals()[name] = constants[name] = getattr(binding, name)
 
 

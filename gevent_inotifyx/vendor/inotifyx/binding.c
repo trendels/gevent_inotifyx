@@ -43,7 +43,13 @@
 #define PENDING_THRESHOLD(qsize)   ((qsize) >> 1)
 
 #define EVENT_SIZE (sizeof (struct inotify_event))
-#define BUF_LEN (1024 * (EVENT_SIZE + 16))
+/* From inotify(7): Specifying a buffer of size
+ *
+ *     sizeof(struct inotify_event) + NAME_MAX + 1
+ *
+ * will be sufficient to read at least one event.
+ */
+#define BUF_LEN (256 * (EVENT_SIZE + NAME_MAX + 1))
 
 #if PY_MAJOR_VERSION >= 3
 #define IS_PY3
@@ -329,6 +335,7 @@ PyMODINIT_FUNC initbinding(void) {
     PyModule_AddIntConstant(module, "IN_ISDIR", IN_ISDIR);
     PyModule_AddIntConstant(module, "IN_ONESHOT", IN_ONESHOT);
     PyModule_AddIntConstant(module, "IN_ALL_EVENTS", IN_ALL_EVENTS);
+    PyModule_AddIntConstant(module, "BUF_LEN", BUF_LEN);
 #ifdef IS_PY3
     return module;
 #endif
