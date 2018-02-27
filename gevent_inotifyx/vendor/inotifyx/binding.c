@@ -49,7 +49,9 @@
  *
  * will be sufficient to read at least one event.
  */
-#define BUF_LEN (256 * (EVENT_SIZE + NAME_MAX + 1))
+#define BUF_LEN_MIN (EVENT_SIZE + NAME_MAX + 1)
+#define BUF_LEN_MAX 32768
+#define BUF_LEN ((BUF_LEN_MIN) > (BUF_LEN_MAX) ? (BUF_LEN_MIN) : (BUF_LEN_MAX))
 
 #if PY_MAJOR_VERSION >= 3
 #define IS_PY3
