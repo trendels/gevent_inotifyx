@@ -43,7 +43,7 @@ Watch a directory while creating new files. This prints
 
 every second:
 
-.. code:: .python
+.. code:: python
 
     #!/usr/bin/env python
     from __future__ import print_function
