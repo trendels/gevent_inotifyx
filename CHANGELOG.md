@@ -8,4 +8,8 @@
 
 ## 0.1.1 (2013-04-12)
 
+  - Packaging fixes
+
+## 0.1.0 (2012-12-07)
+
   - Initial release
