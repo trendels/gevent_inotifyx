@@ -45,7 +45,8 @@ every second:
 
 .. code:: .python
 
-    #!/usr/bin/env python3
+    #!/usr/bin/env python
+    from __future__ import print_function
     import os
     import gevent
     import gevent_inotifyx as inotify
@@ -53,8 +54,8 @@ every second:
     def create_file_events():
         """Open and close a file to generate inotify events."""
         while True:
-            f = open('/tmp/test.txt', 'a')
-            f.close()
+            with open('/tmp/test.txt', 'a'):
+                pass
             gevent.sleep(1)
 
     def watch_for_events():
