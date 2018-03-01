@@ -20,7 +20,7 @@ Calling gevent_inotifyx.get_events() will only block the current greenlet
 instead of the current thread.
 """
 
-__version__ = '0.1.1'
+__version__ = '0.2'
 
 import os
 import struct
