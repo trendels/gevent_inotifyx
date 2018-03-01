@@ -1,13 +1,17 @@
 gevent\_inotifyx
 ================
 
-`gevent <http://www.gevent.org/>`__ compatibility module for the
-`inotifyx <http://www.alittletooquiet.net/software/inotifyx/>`__ Python
-inotify bindings.
+|build-status-img|
 
-This module is designed as a drop-in replacement for inotifyx. Calling
-``gevent_inotifyx.get_events()`` will only block the current greenlet
-instead of the current thread.
+Gevent-compatible low-level inotify bindings based on
+`inotifyx <https://launchpad.net/inotifyx/>`__.
+
+-  Python 2 and 3 compatible
+-  Exposes a low-level
+   `inotify(7) <http://man7.org/linux/man-pages/man7/inotify.7.html>`__
+   API
+-  Allows to wait for events in a non-blocking way when using
+   `gevent <http://www.gevent.org/>`__.
 
 Installation
 ------------
@@ -28,39 +32,54 @@ To run the tests:
 
     $ python setup.py test
 
-You can also test the module from the command line:
+Examples
+--------
+
+Watch a directory while creating new files. This prints
 
 ::
 
-    $ python -m gevent_inotifyx /some/path
+    event: test.txt IN_CLOSE|IN_CLOSE_WRITE|IN_ALL_EVENTS
 
-will print inotify events for ``/some/path``
+every second:
 
-Example
--------
+.. code:: .python
 
-Watch for newly created files and directories in ``/tmp``:
-
-::
-
+    #!/usr/bin/env python3
     import os
     import gevent
     import gevent_inotifyx as inotify
-    from gevent.queue import Queue
 
-    def event_producer(fd, q):
-       while True:
-           events = inotify.get_events(fd)
-           for event in events:
-               q.put(event)
-
-    q = Queue()
-    fd = inotify.init()
-    try:
-        wd = inotify.add_watch(fd, '/tmp', inotify.IN_CREATE)
-        gevent.spawn(event_producer, fd, q)
+    def create_file_events():
+        """Open and close a file to generate inotify events."""
         while True:
-           event = q.get()
-           print "received event:", event.get_mask_description(), event.name
-    finally:
-        os.close(fd)
+            f = open('/tmp/test.txt', 'a')
+            f.close()
+            gevent.sleep(1)
+
+    def watch_for_events():
+        """Wait for events and print them to stdout."""
+        fd = inotify.init()
+        try:
+            wd = inotify.add_watch(fd, '/tmp', inotify.IN_CLOSE_WRITE)
+            while True:
+                for event in inotify.get_events(fd):
+                    print("event:", event.name, event.get_mask_description())
+        finally:
+            os.close(fd)
+
+    if __name__ == '__main__':
+        tasks = [
+            gevent.spawn(watch_for_events),
+            gevent.spawn(create_file_events),
+        ]
+        gevent.joinall(tasks)
+
+License
+-------
+
+gevent\_inotifyx is licensed under the MIT License. See the included
+file ``LICENSE`` for details.
+
+.. |build-status-img| image:: https://travis-ci.org/trendels/gevent_inotifyx.svg
+   :target: https://travis-ci.org/trendels/gevent_inotifyx
