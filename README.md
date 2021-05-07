@@ -24,7 +24,7 @@ From source:
 
 To run the tests:
 
-    $ python setup.py test
+    $ make test
 
 ## Examples
 
