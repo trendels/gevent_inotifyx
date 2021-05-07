@@ -1,5 +1,5 @@
-gevent\_inotifyx
-================
+gevent_inotifyx
+===============
 
 |build-status-img|
 
@@ -18,19 +18,19 @@ Installation
 
 ::
 
-    $ pip install gevent_inotifyx
+   $ pip install gevent_inotifyx
 
 From source:
 
 ::
 
-    $ python setup.py install
+   $ python setup.py install
 
 To run the tests:
 
 ::
 
-    $ python setup.py test
+   $ make test
 
 Examples
 --------
@@ -39,48 +39,48 @@ Watch a directory while creating new files. This prints
 
 ::
 
-    event: test.txt IN_CLOSE|IN_CLOSE_WRITE|IN_ALL_EVENTS
+   event: test.txt IN_CLOSE|IN_CLOSE_WRITE|IN_ALL_EVENTS
 
 every second:
 
 .. code:: python
 
-    #!/usr/bin/env python
-    from __future__ import print_function
-    import os
-    import gevent
-    import gevent_inotifyx as inotify
+   #!/usr/bin/env python
+   from __future__ import print_function
+   import os
+   import gevent
+   import gevent_inotifyx as inotify
 
-    def create_file_events():
-        """Open and close a file to generate inotify events."""
-        while True:
-            with open('/tmp/test.txt', 'a'):
-                pass
-            gevent.sleep(1)
+   def create_file_events():
+       """Open and close a file to generate inotify events."""
+       while True:
+           with open('/tmp/test.txt', 'a'):
+               pass
+           gevent.sleep(1)
 
-    def watch_for_events():
-        """Wait for events and print them to stdout."""
-        fd = inotify.init()
-        try:
-            wd = inotify.add_watch(fd, '/tmp', inotify.IN_CLOSE_WRITE)
-            while True:
-                for event in inotify.get_events(fd):
-                    print("event:", event.name, event.get_mask_description())
-        finally:
-            os.close(fd)
+   def watch_for_events():
+       """Wait for events and print them to stdout."""
+       fd = inotify.init()
+       try:
+           wd = inotify.add_watch(fd, '/tmp', inotify.IN_CLOSE_WRITE)
+           while True:
+               for event in inotify.get_events(fd):
+                   print("event:", event.name, event.get_mask_description())
+       finally:
+           os.close(fd)
 
-    if __name__ == '__main__':
-        tasks = [
-            gevent.spawn(watch_for_events),
-            gevent.spawn(create_file_events),
-        ]
-        gevent.joinall(tasks)
+   if __name__ == '__main__':
+       tasks = [
+           gevent.spawn(watch_for_events),
+           gevent.spawn(create_file_events),
+       ]
+       gevent.joinall(tasks)
 
 License
 -------
 
-gevent\_inotifyx is licensed under the MIT License. See the included
-file ``LICENSE`` for details.
+gevent_inotifyx is licensed under the MIT License. See the included file
+``LICENSE`` for details.
 
 .. |build-status-img| image:: https://travis-ci.org/trendels/gevent_inotifyx.svg
    :target: https://travis-ci.org/trendels/gevent_inotifyx
