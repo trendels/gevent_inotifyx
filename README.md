@@ -1,6 +1,7 @@
 # gevent_inotifyx
 
 [![build-status-img]][build-status-url]
+[![PyPI](https://img.shields.io/pypi/v/gevent_inotifyx)](https://pypi.python.org/pypi/gevent_inotifyx)
 
 Gevent-compatible low-level inotify bindings based on [inotifyx].
 
